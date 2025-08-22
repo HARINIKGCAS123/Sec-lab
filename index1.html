@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <input type="text" id="inputValue" placeholder="Enter your task">
+  <button onclick="addTask()">Add Task</button>  
+  <ul id="listContent"></ul>
+
+  <script>
+    function addTask() {
+      let textContent = document.getElementById("inputValue").value.trim();
+      if (textContent === "") return;
+      
+      let li = document.createElement("li");  // Use <li> instead of <h4>
+      li.textContent = textContent;
+      document.getElementById("listContent").appendChild(li);
+
+      const removeBtn = document.createElement("button");
+      removeBtn.textContent = "Remove"; // Added text to button
+      removeBtn.addEventListener("click", function () {
+        li.remove(); // Remove the task when clicked
+      });
+      
+      li.appendChild(removeBtn);  // Append the remove button to each list item
+    }
+  </script>
+</body>
+</html>
