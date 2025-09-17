@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        // A set is a collection of unique values. It automatically removes duplicates.
+        let email = new Set([]);
+        email.add("js@gmail.com");
+        email.add("java@gmail.com");
+        email.add("py@gmail.com");
+        console.log(email);  // Output: Set {"js@gmail.com", "java@gmail.com", "py@gmail.com"}
+
+        email.delete("py@gmail.com");
+        console.log(email);  // Output: Set {"js@gmail.com", "java@gmail.com"}
+
+        email.clear();
+        console.log(email);  // Output: Set {}
+
+        // Loop through the Set
+        for (let mailId of email) {
+            console.log(mailId);  // No output, since it's now an empty set.
+        }
+
+        // Using forEach method to iterate through the set
+        email.forEach(x => {
+            console.log(x);  // No output, since it's now an empty set.
+        });
+
+        let admin = new Set(["write", "read", "delete"]);
+        let user = new Set(["read"]);
+
+        // Function to check if a role has a certain permission
+        function hasPermission(role, granted) {
+            return role.has(granted);  // Check if the role has the granted permission.
+        }
+
+        console.log(hasPermission(admin, "delete"));  // Output: true
+        console.log(hasPermission(user, "delete"));  // Output: false
+
+        // Union of two sets
+        let setA = new Set([1, 2, 3, 4, 5]);
+        let setB = new Set([6, 7, 8, 9, 10, 1]);
+        let union = new Set([...setA, ...setB]);
+        console.log(union);
+        let intersection=new Set([...setA].filter(x=>setB.has(x)));
+    console.log(intersection);
+    let difference=new Set([...setA].filter(x=>!setB.has(x)));
+    console.log(difference);
+
+
+    //2.entries() method
+    //Returns a new iterator Object with[value,value] pairs.
+    //This is because sets do not separate keys-only values.
+    
+
+    //weakMap
+    //A javaScript is a collection of key/value pairs
+    //where the keys must be objects.
+    let user1={name:"java"};
+    let user2={name:"python"};
+    let mymap=new Map();
+    mymap.set(user1,"welcome");
+    mymap.set(user2,"java script");
+    console.log(mymap);
+
+    for(let map of mymap){
+        console.log(map)
+    }
+    </script>
+</body>
+</html>
