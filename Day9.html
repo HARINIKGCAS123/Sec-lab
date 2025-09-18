@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Persistent To-Do List</title>
+<body>
+  <h1>My To-Do List</h1>
+  <input type="text" id="todo-input" placeholder="Enter a task" />
+  <button onclick="addTask()">Add Task</button>
+  <ul id="task-list"></ul>
+
+  <script>
+    let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+    const input = document.getElementById('todo-input');
+    const list = document.getElementById('task-list');
+
+    input.value = sessionStorage.getItem('currentInput') || "";
+
+    input.addEventListener('input', () => {
+      sessionStorage.setItem('currentInput', input.value);
+    });
+
+    function saveTasks() {
+      localStorage.setItem('tasks', JSON.stringify(tasks));
+    }
+    function renderTasks() {
+      list.innerHTML = '';
+      tasks.forEach((task, index) => {
+        const li = document.createElement('li');
+        li.className = task.completed ? 'completed' : '';
+        li.textContent = task.text;
+
+        li.addEventListener('click', () => {
+          tasks[index].completed = !tasks[index].completed;
+          saveTasks();
+          renderTasks();
+        });
+
+        const delBtn = document.createElement('button');
+        delBtn.textContent = '🗑️';
+        delBtn.onclick = (e) => {
+          e.stopPropagation(); 
+          tasks.splice(index, 1);
+          saveTasks();
+          renderTasks();
+        };
+
+        li.appendChild(delBtn);
+        list.appendChild(li);
+      });
+    }
+
+    function addTask() {
+      const text = input.value.trim();
+      if (text === '') return;
+      tasks.push({ text: text, completed: false });
+      saveTasks();         
+      input.value = '';    
+      sessionStorage.removeItem('currentInput');
+      renderTasks();          
+    }
+    renderTasks();
+  </script>
+</body>
+</html>
