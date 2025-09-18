@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Form Validator with Regex</title>
+</head>
+<body>
+
+  <h1>Form Validator Using Regex</h1>
+
+  <form id="myForm" novalidate>
+    <label for="name">Name:</label>
+    <input type="text" id="name" placeholder="Enter your full name" />
+    <div id="nameMsg" class="message"></div>
+    <label for="password">Password:</label>
+    <input type="password" id="password" placeholder="Enter your password" />
+    <div id="passwordMsg" class="message"></div>
+    <label for="phone">Phone Number:</label>
+    <input type="text" id="phone" placeholder="Enter your phone number" maxlength="14" />
+    <div id="phoneMsg" class="message"></div>
+
+    <button type="submit">Validate</button>
+  </form>
+
+  <script>
+    const form = document.getElementById('myForm');
+    const nameInput = document.getElementById('name');
+    const passwordInput = document.getElementById('password');
+    const phoneInput = document.getElementById('phone');
+
+    const nameMsg = document.getElementById('nameMsg');
+    const passwordMsg = document.getElementById('passwordMsg');
+    const phoneMsg = document.getElementById('phoneMsg');
+
+    
+    const nameRegex = /^([A-Za-z]+(\s[A-Za-z]+)*)$/i;
+
+    
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+
+    const phoneFormatRegex = /^\(\d{3}\) \d{3}-\d{4}$/;
+    function formatPhoneNumber(value) {
+      const digits = value.replace(/\D/g, '');
+
+      const match = digits.match(/^(\d{0,3})(\d{0,3})(\d{0,4})$/);
+
+      if (!match) return '';
+
+      let formatted = '';
+      if (match[1]) {
+        formatted = '(' + match[1];
+      }
+      if (match[1].length === 3) {
+        formatted += ') ';
+      }
+      if (match[2]) {
+        formatted += match[2];
+      }
+      if (match[2].length === 3) {
+        formatted += '-';
+      }
+      if (match[3]) {
+        formatted += match[3];
+      }
+      return formatted;
+    }
+    phoneInput.addEventListener('input', (e) => {
+      const cursorPos = phoneInput.selectionStart;
+      const oldValue = phoneInput.value;
+
+      const formatted = formatPhoneNumber(phoneInput.value);
+      phoneInput.value = formatted;
+
+      
+      if (cursorPos < formatted.length) {
+        phoneInput.selectionEnd = cursorPos;
+      } else {
+        phoneInput.selectionEnd = formatted.length;
+      }
+    });
+
+    
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+
+      const nameVal = nameInput.value.trim();
+      const passwordVal = passwordInput.value;
+      const phoneVal = phoneInput.value;
+
+      let valid = true;
+
+    
+      if (nameRegex.test(nameVal)) {
+        nameMsg.textContent = 'Valid name ✅';
+        nameMsg.className = 'message valid';
+      } else {
+        nameMsg.textContent = 'Invalid name. Use only letters and spaces.';
+        nameMsg.className = 'message invalid';
+        valid = false;
+      }
+
+
+      if (passwordRegex.test(passwordVal)) {
+        passwordMsg.textContent = 'Strong password ✅';
+        passwordMsg.className = 'message valid';
+      } else {
+        passwordMsg.textContent = 'Password must be at least 8 characters, include uppercase, lowercase, number, and special character.';
+        passwordMsg.className = 'message invalid';
+        valid = false;
+      }
+
+      
+      if (phoneFormatRegex.test(phoneVal)) {
+        phoneMsg.textContent = 'Valid phone number ✅';
+        phoneMsg.className = 'message valid';
+      } else {
+        phoneMsg.textContent = 'Phone number must be in format (123) 456-7890';
+        phoneMsg.className = 'message invalid';
+        valid = false;
+      }
+
+      if (valid) {
+        alert('All inputs are valid! Form can be submitted.');
+      }
+    });
+  </script>
+
+</body>
+</html>
