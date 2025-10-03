@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Contact Management</title>
+</head>
+<body>
+    <h1>Contact Management</h1>
+
+    <script>
+        function Contact(name, phone, email) {
+            this.name = name;
+            this.phone = phone;
+            this.email = email;
+            this.displayInfo = function() {
+                const { name, phone, email } = this; 
+                console.log(`Name: ${name}, Phone: ${phone}, Email: ${email}`);
+            };
+        }
+        const contacts = [
+            new Contact("Akshaya", "123-456-7890", "akshaya@example.com"),
+            new Contact("Sweetlin", "987-654-3210", "sweety@example.com")
+        ];
+
+        function printContact({ name, phone, email }) {
+            console.log(`[PRINT] Name: ${name}, Phone: ${phone}, Email: ${email}`);
+        }
+
+        console.log("---- Iterating Contacts ----");
+        contacts.forEach(contact => {
+            contact.displayInfo(); 
+            printContact(contact);  
+            console.log("Dot Notation:", contact.name); 
+            console.log("Bracket Notation:", contact["email"]);
+            console.log("------------------------");
+        });
+        function addContacts(contactArray, ...newContacts) {
+            newContacts.forEach(c => {
+                const [name, phone, email] = c;
+                contactArray.push(new Contact(name, phone, email));
+            });
+        }
+
+        console.log("\n---- Merged Contacts ----");
+
+        console.log("\n---- Method Borrowing ----");
+
+        const contact1 = new Contact("Ashmitha", "000-000-0000", "tony@starkindustries.com");
+
+        const contact2 = {
+            name: "Sridevi",
+            phone: "999-999-9999",
+            email: "sri@gmail.com"
+        };
+        console.log("Using call():");
+        contact1.displayInfo.call(contact2);
+        console.log("Using apply():");
+        contact1.displayInfo.apply(contact2);
+        console.log("Using bind():");
+        const displayBruce = contact1.displayInfo.bind(contact2);
+        displayBruce();
+    </script>
+</body>
+</html>
